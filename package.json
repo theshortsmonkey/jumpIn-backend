@@ -8,6 +8,8 @@
     "@dmedina2015/skipper-gridfs": "^1.1.0",
     "@sailshq/lodash": "^3.10.3",
     "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.3.1",
     "sails": "^1.5.9",
     "sails-hook-orm": "^4.0.0",
     "sails-hook-sockets": "^3.0.0",
