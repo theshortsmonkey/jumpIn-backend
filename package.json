@@ -1,0 +1,42 @@
+{
+  "name": "test-db-monday",
+  "private": true,
+  "version": "0.0.0",
+  "description": "a Sails application",
+  "keywords": [],
+  "dependencies": {
+    "@dmedina2015/skipper-gridfs": "^1.1.0",
+    "@sailshq/lodash": "^3.10.3",
+    "axios": "^1.6.8",
+    "sails": "^1.5.9",
+    "sails-hook-orm": "^4.0.0",
+    "sails-hook-sockets": "^3.0.0",
+    "sails-mongo": "^2.1.0",
+    "skipper": "^0.9.4",
+    "skipper-disk": "^0.5.12"
+  },
+  "devDependencies": {
+    "eslint": "5.16.0",
+    "mocha": "^10.4.0",
+    "should": "^13.2.3",
+    "supertest": "^6.3.4"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "seed": "node ../db/seedLocalTestDb.js",
+    "test": "node ./node_modules/mocha/bin/mocha test/lifecycle.test.js test/integration/**/*.test.js",
+    "lint": "./node_modules/eslint/bin/eslint.js . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
+    "custom-tests": "echo \"(No other custom tests yet.)\" && echo",
+    "seed-local": "cd .. && node ./db/seedLocalTestDb.js"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ste/test-db-monday.git"
+  },
+  "author": "ste",
+  "license": "",
+  "engines": {
+    "node": "^21.4"
+  }
+}
