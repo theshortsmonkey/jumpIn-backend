@@ -23,6 +23,6 @@ module.exports.routes = {
 
   "GET /": "Home.endpoints",
   "POST /rides/:ride_id/messages": "Rides.postMessage",
-  "GET /rides/:ride_id/:username/messages": "Rides.getMessages",
-  "GET /rides/:username/messages" : "Rides.getUserMessages"
+  "GET /rides/:ride_id/messages/:username": "Rides.getMessages",
+  "GET /rides/:ride_id/driverMessages/:username" : "Rides.getDriverMessages"
 };

@@ -8,9 +8,9 @@
 module.exports = {
   getUserDistance: async (req, res) => {
     try {
-      const db = Rides.getDatastore().manager;
+      const db = Rides.getDatastore().manager
       const findRides = await db
-        .collection("rides")
+        .collection('rides')
         .aggregate([
           {
             $match: {
@@ -21,22 +21,22 @@ module.exports = {
           },
           {
             $group: {
-              _id: "$rider_usernames",
-              totalDistance: { $sum: "$distance" },
+              _id: '$rider_usernames',
+              totalDistance: { $sum: '$distance' },
             },
           },
         ])
-        .toArray();
-      res.ok(findRides[0]);
+        .toArray()
+      res.ok(findRides[0])
     } catch (error) {
-      return res.badRequest(error);
+      return res.badRequest(error)
     }
   },
   getUserCarbon: async (req, res) => {
     try {
-      const db = Rides.getDatastore().manager;
+      const db = Rides.getDatastore().manager
       const findRides = await db
-        .collection("rides")
+        .collection('rides')
         .aggregate([
           {
             $match: {
@@ -47,22 +47,22 @@ module.exports = {
           },
           {
             $group: {
-              _id: "$rider_usernames",
-              totalCarbon: { $sum: "$carbon_emissions" },
+              _id: '$rider_usernames',
+              totalCarbon: { $sum: '$carbon_emissions' },
             },
           },
         ])
-        .toArray();
-      res.ok(findRides[0]);
+        .toArray()
+      res.ok(findRides[0])
     } catch (error) {
-      return res.badRequest(error);
+      return res.badRequest(error)
     }
   },
   getUserSpend: async (req, res) => {
     try {
-      const db = Rides.getDatastore().manager;
+      const db = Rides.getDatastore().manager
       const findRides = await db
-        .collection("rides")
+        .collection('rides')
         .aggregate([
           {
             $match: {
@@ -72,59 +72,74 @@ module.exports = {
             },
           },
           {
-            $group: { _id: "$rider_usernames", totalSpend: { $sum: "$price" } },
+            $group: { _id: '$rider_usernames', totalSpend: { $sum: '$price' } },
           },
         ])
-        .toArray();
-      res.ok(findRides[0]);
+        .toArray()
+      res.ok(findRides[0])
     } catch (error) {
-      return res.badRequest(error);
+      return res.badRequest(error)
     }
   },
   postMessage: async (req, res) => {
-    const findRide = await Rides.findOne({ id: req.params.ride_id });
-    findRide.chats.push(req.body);
-    const updatedRide = await Rides.updateOne(
-      {
-        id: req.params.ride_id,
-      },
-      {
-        chats: findRide.chats,
+    try {
+      const message = {
+        from: req.body.from,
+        text: req.body.text,
+        timeStamp: new Date(Date.now()).toISOString(),
       }
-    ).fetch();
-    return res.ok(updatedRide.chats);
+      const findRide = await Rides.findOne({ id: req.params.ride_id })
+      const updatedChat = []
+      const newChats = findRide.chats.map((chat) => {
+        if (chat.rider === req.body.rider) {
+          chat.messages.push(message)
+          updatedChat.push(chat)
+        }
+        return chat
+      })
+      if (updatedChat.length === 0) {
+        newChats.push({
+          rider: req.body.from,
+          driver: req.body.driver,
+          messages: [message],
+        })
+      }
+      const updatedRide = await Rides.updateOne(
+        {
+          id: req.params.ride_id,
+        },
+        {
+          chats: newChats,
+        }
+      )
+      const chats = updatedRide.chats.filter(
+        (chat) => chat.rider === req.body.rider
+      )
+      return res.ok(chats)
+    } catch (error) {
+      return res.badRequest(error)
+    }
   },
   getMessages: async (req, res) => {
-    const findRide = await Rides.findOne({ id: req.params.ride_id });
-    const chats = findRide.chats.filter(
-      (chat) =>
-        chat.to === req.params.username || chat.from === req.params.username
-    );
-    return res.ok(chats);
+    try {
+      const findRide = await Rides.findOne({ id: req.params.ride_id })
+      const chats = findRide.chats.filter(
+        (chat) => chat.rider === req.params.username
+      )
+      return res.ok(chats)
+    } catch (error) {
+      return res.badRequest(error)
+    }
   },
-  getUserMessages: async (req, res) => {
-    const db = Rides.getDatastore().manager;
-    const findRides = await db
-      .collection("rides")
-      .find({
-        $or: [
-          {
-            "chats.to": req.params.username,
-          },
-          {
-            "chats.from": req.params.username,
-          },
-        ],
-      })
-      .project({ id: 1, chats: 1, from: 1, to: 1 })
-      .toArray();
-    const filteredChats = findRides.map((ride) => {
-      ride.chats = ride.chats.filter(
-        (chat) =>
-          chat.from === req.params.username || chat.to === req.params.username
-      );
-      return ride;
-    });
-    return res.ok(filteredChats);
+  getDriverMessages: async (req, res) => {
+    try {
+      const findRide = await Rides.findOne({ id: req.params.ride_id })
+      const chats = findRide.chats.filter(
+        (chat) => chat.driver === req.params.username
+      )
+      return res.ok(chats)
+    } catch (error) {
+      return res.badRequest(error)
+    }
   },
-};
+}

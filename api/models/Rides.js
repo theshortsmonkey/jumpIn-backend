@@ -24,7 +24,7 @@ module.exports = {
     rider_rating: {type: 'number', required: false, },
     date_and_time: {type: 'ref', required: true },
     chats: {type: 'json', required: false },
-    __v: {type: 'string', required: false },
+    // __v: {type: 'string', required: false },
 
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
