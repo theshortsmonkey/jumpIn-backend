@@ -6,6 +6,31 @@
  */
 
 module.exports = {
+  patchRide: async (req, res) => {
+    try {
+      let newRider = ''
+      if (req.body.hasOwnProperty('requestJumpin')) {
+        newRider = req.body.requestJumpin
+      }
+      const findRide = await Rides.findOne({ id: req.params.ride_id })
+      if (!findRide.jumpin_requests.includes(newRider)) {
+        findRide.jumpin_requests.push(newRider)
+        const updatedRide = await Rides.updateOne(
+          {
+            id: req.params.ride_id,
+          },
+          {
+            jumpin_requests: findRide.jumpin_requests,
+          }
+        )
+        return res.ok(updatedRide)
+      } else {
+        return res.badRequest('user already requested to jumpIn')
+      }
+    } catch (error) {
+      return res.status(404).send(error)
+    }
+  },
   getUserDistance: async (req, res) => {
     try {
       const db = Rides.getDatastore().manager

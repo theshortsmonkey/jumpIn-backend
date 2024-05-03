@@ -15,6 +15,7 @@ module.exports = {
     from_region: {type: 'string', required: true },
     driver_username: {type: 'string', required: true },
     rider_usernames: {type: 'json', required: false },
+    jumpin_requests: {type: 'json', required: false },
     available_seats: {type: 'number', required: true },
     carbon_emissions: {type: 'number', required: true },
     distance: {type: 'number', required: false },

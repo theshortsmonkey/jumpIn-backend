@@ -22,6 +22,7 @@ module.exports.routes = {
   "DELETE /users/:username/image": "Users.imageDelete",
 
   "GET /": "Home.endpoints",
+  "PATCH /rides/:ride_id": "Rides.patchRide",
   "POST /rides/:ride_id/messages": "Rides.postMessage",
   "GET /rides/:ride_id/messages/:username": "Rides.getMessages",
   "GET /rides/:ride_id/driverMessages/:username" : "Rides.getDriverMessages"
