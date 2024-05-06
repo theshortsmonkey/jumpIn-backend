@@ -8,24 +8,61 @@
 module.exports = {
   patchRide: async (req, res) => {
     try {
-      let newRider = ''
-      if (req.body.hasOwnProperty('requestJumpin')) {
-        newRider = req.body.requestJumpin
-      }
       const findRide = await Rides.findOne({ id: req.params.ride_id })
-      if (!findRide.jumpin_requests.includes(newRider)) {
-        findRide.jumpin_requests.push(newRider)
-        const updatedRide = await Rides.updateOne(
-          {
-            id: req.params.ride_id,
-          },
-          {
-            jumpin_requests: findRide.jumpin_requests,
-          }
-        )
-        return res.ok(updatedRide)
-      } else {
-        return res.badRequest('user already requested to jumpIn')
+      if (req.body.hasOwnProperty('requestJumpin')) {
+        const requestedRider = req.body.requestJumpin
+        if (!findRide.jumpin_requests.includes(requestedRider)) {
+          findRide.jumpin_requests.push(requestedRider)
+          const updatedRide = await Rides.updateOne(
+            {
+              id: req.params.ride_id,
+            },
+            {
+              jumpin_requests: findRide.jumpin_requests,
+            }
+          )
+          return res.ok(updatedRide)
+        } else {
+          return res.badRequest('user already requested to jumpIn')
+        }
+      } else if (req.body.hasOwnProperty('acceptRider')) {
+        const acceptedRider = req.body.acceptRider
+        if (!findRide.rider_usernames.includes(acceptedRider)) {
+          findRide.rider_usernames.push(acceptedRider)
+          findRide.jumpin_requests.forEach((rider,i) => {
+            if(rider == acceptedRider) findRide.jumpin_requests.splice(i,1)
+          })
+          const updatedRide = await Rides.updateOne(
+            {
+              id: req.params.ride_id,
+            },
+            {
+              rider_usernames: findRide.rider_usernames,
+              jumpin_requests: findRide.jumpin_requests,
+            }
+          )
+          return res.ok(updatedRide)
+        } else {
+          return res.badRequest('user has already joined ride')
+        }
+      } else if (req.body.hasOwnProperty('rejectRider')) {
+        const rejectedRider = req.body.rejectRider
+        if (findRide.jumpin_requests.includes(rejectedRider)) {
+          findRide.jumpin_requests.forEach((rider,i) => {
+            if(rider == rejectedRider) findRide.jumpin_requests.splice(i,1)
+          })
+          const updatedRide = await Rides.updateOne(
+            {
+              id: req.params.ride_id,
+            },
+            {
+              jumpin_requests: findRide.jumpin_requests,
+            }
+          )
+          return res.ok(updatedRide)
+        } else {
+          return res.badRequest('no request exists for user')
+        }
       }
     } catch (error) {
       return res.status(404).send(error)
@@ -124,7 +161,7 @@ module.exports = {
       })
       if (updatedChat.length === 0) {
         newChats.push({
-          rider: req.body.from,
+          rider: req.body.rider,
           driver: req.body.driver,
           messages: [message],
         })
