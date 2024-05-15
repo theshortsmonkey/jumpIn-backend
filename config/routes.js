@@ -13,7 +13,8 @@ module.exports.routes = {
   "GET /carbon/:username": "Rides.getUserCarbon",
   "GET /spend/:username": "Rides.getUserSpend",
 
-  "GET /users/:username": "Users.getUser",
+  "GET /users/currentUser": "Users.getCurrentUser",
+  "GET /users/:username": "Users.getUserByUsername",
   "PATCH /users/:username": "Users.patchUser",
   "DELETE /users/:username": "Users.deleteUser",
   "POST /users/:username/login": "Users.login",

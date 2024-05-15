@@ -37,10 +37,25 @@ module.exports = {
       return res.badRequest(error)
     }
   },
-  getUser: async (req, res) => {
+  getCurrentUser: async (req, res) => {
+    try {
+      if (req.session.userId) {
+        const findUser = await Users.findOne({ id: req.session.userId })
+        return res.json(findUser)
+      } else {
+        res.status(404)
+        return res.json({
+          message: 'UserId not found',
+        })
+      }
+    } catch (error) {
+      return res.badRequest(error)
+    }
+  },
+  getUserByUsername: async (req, res) => {
     try {
       const findUser = await Users.findOne({ username: req.params.username })
-      if (findUser) return res.ok(findUser)
+      if (findUser) return res.json(findUser)
       else res.status(404)
       return res.json({
         message: 'Username not found',
@@ -117,21 +132,21 @@ module.exports = {
 
   login: async (req, res) => {
     try {
-      console.log('login attempt')
-      console.log(req.session)
       const findUser = await Users.findOne({ username: req.params.username })
       if (findUser) {
-        bcrypt.compare(req.body.password,findUser.password).then((compareResult) => {
-          if (compareResult) {
-            req.session.userId = findUser.id
-            return res.json(findUser)
-          } else {
-            res.status(401)
-            return res.json({
-              message: 'Unauthorised',
-            })
-          }
-        })
+        bcrypt
+          .compare(req.body.password, findUser.password)
+          .then((compareResult) => {
+            if (compareResult) {
+              req.session.userId = findUser.id
+              return res.json(findUser)
+            } else {
+              res.status(401)
+              return res.json({
+                message: 'Unauthorised',
+              })
+            }
+          })
       } else {
         res.status(404)
         return res.json({
@@ -143,15 +158,20 @@ module.exports = {
     }
   },
 
-  logout: async (req,res) => {
+  logout: async (req, res) => {
     try {
-      console.log('logout attempt')
-      delete req.session.userId
-      return res.json({
-        message: `${req.params.username} session cleared`
-      })
+      if (req.session.userId) {
+        delete req.session.userId
+        return res.json({
+          message: `${req.params.username} session cleared`,
+        })
+      } else {
+        return res.json({
+          message: `No active login for this session`,
+        })
+      }
     } catch (error) {
       return res.badRequest(error)
     }
-  }
+  },
 }
