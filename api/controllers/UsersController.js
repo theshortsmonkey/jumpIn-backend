@@ -29,10 +29,31 @@ module.exports = {
   },
   patchUser: async (req, res) => {
     try {
-      const updatedUser = await Users.update({ username: req.params.username })
-        .set(req.body)
-        .fetch()
-      return res.ok(updatedUser)
+      const findUser = await Users.findOne({ username: req.params.username })
+      if (findUser) {
+        const compareResult = bcrypt.compare(
+          req.body.password,
+          findUser.password
+        )
+        if (compareResult) {
+          const updatedUser = await Users.update({
+            username: req.params.username,
+          })
+            .set(req.body)
+            .fetch()
+          return res.ok(updatedUser)
+        } else {
+          res.status(401)
+          return res.json({
+            message: 'Unauthorised',
+          })
+        }
+      } else {
+        res.status(404)
+        return res.json({
+          message: 'Username not found',
+        })
+      }
     } catch (error) {
       return res.badRequest(error)
     }
@@ -43,7 +64,7 @@ module.exports = {
         const findUser = await Users.findOne({ id: req.session.userId })
         const result = {
           username: findUser.username,
-          isDriver: findUser.driver_verification_status
+          isDriver: findUser.driver_verification_status,
         }
         return res.json(result)
       } else {
@@ -145,7 +166,7 @@ module.exports = {
               req.session.userId = findUser.id
               const result = {
                 username: findUser.username,
-                isDriver: findUser.driver_verification_status
+                isDriver: findUser.driver_verification_status,
               }
               return res.json(result)
             } else {
