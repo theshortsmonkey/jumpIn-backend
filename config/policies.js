@@ -21,5 +21,6 @@ module.exports.policies = {
   '*': 'isLoggedIn',
   'users/login': true,
   'users/logout': true,
-  'users/getCurrentUser': true
+  'users/getCurrentUser': true,
+  'users/create': true
 };

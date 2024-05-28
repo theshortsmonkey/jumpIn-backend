@@ -6,7 +6,7 @@
  */
 
 const { mongo } = require('mongoose')
-const { createWriteStream, createReadStream, unlink } = require('fs')
+const { createReadStream } = require('fs')
 const axios = require('axios')
 const bcrypt = require('bcrypt')
 
@@ -41,7 +41,11 @@ module.exports = {
     try {
       if (req.session.userId) {
         const findUser = await Users.findOne({ id: req.session.userId })
-        return res.json(findUser)
+        const result = {
+          username: findUser.username,
+          isDriver: findUser.driver_verification_status
+        }
+        return res.json(result)
       } else {
         res.status(404)
         return res.json({
@@ -139,7 +143,11 @@ module.exports = {
           .then((compareResult) => {
             if (compareResult) {
               req.session.userId = findUser.id
-              return res.json(findUser)
+              const result = {
+                username: findUser.username,
+                isDriver: findUser.driver_verification_status
+              }
+              return res.json(result)
             } else {
               res.status(401)
               return res.json({
