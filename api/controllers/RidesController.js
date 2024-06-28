@@ -63,6 +63,23 @@ module.exports = {
         } else {
           return res.badRequest('no request exists for user')
         }
+      } else if (req.body.hasOwnProperty('removeRider')) {
+        const removeRider = req.body.removeRider
+        if (findRide.rider_usernames.includes(removeRider)) {
+          const index = findRide.rider_usernames.findIndex((rider) => rider === removeRider)
+          findRide.rider_usernames.splice(index,1)
+          const updatedRide = await Rides.updateOne(
+            {
+              id: req.params.ride_id,
+            },
+            {
+              rider_usernames: findRide.rider_usernames,
+            }
+          )
+          return res.ok(updatedRide)
+        } else {
+          return res.badRequest('user not accepted on ride')
+        }
       }
     } catch (error) {
       return res.status(404).send(error)
