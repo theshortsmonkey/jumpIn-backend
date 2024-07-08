@@ -16,6 +16,7 @@ module.exports = {
       const findUser = await Users.findOne({ username: req.params.username })
       if (findUser) {
         await Users.destroy({ username: req.params.username })
+        delete req.session.userId
         return res.ok()
       } else {
         res.status(404)
@@ -36,6 +37,7 @@ module.exports = {
           findUser.password
         )
         if (compareResult) {
+          delete req.body.password
           const updatedUser = await Users.update({
             username: req.params.username,
           })
