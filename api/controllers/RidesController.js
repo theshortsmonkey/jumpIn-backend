@@ -29,8 +29,8 @@ module.exports = {
         const acceptedRider = req.body.acceptRider
         if (!findRide.rider_usernames.includes(acceptedRider)) {
           findRide.rider_usernames.push(acceptedRider)
-          findRide.jumpin_requests.forEach((rider,i) => {
-            if(rider == acceptedRider) findRide.jumpin_requests.splice(i,1)
+          findRide.jumpin_requests.forEach((rider, i) => {
+            if (rider == acceptedRider) findRide.jumpin_requests.splice(i, 1)
           })
           const updatedRide = await Rides.updateOne(
             {
@@ -48,8 +48,8 @@ module.exports = {
       } else if (req.body.hasOwnProperty('rejectRider')) {
         const rejectedRider = req.body.rejectRider
         if (findRide.jumpin_requests.includes(rejectedRider)) {
-          findRide.jumpin_requests.forEach((rider,i) => {
-            if(rider == rejectedRider) findRide.jumpin_requests.splice(i,1)
+          findRide.jumpin_requests.forEach((rider, i) => {
+            if (rider == rejectedRider) findRide.jumpin_requests.splice(i, 1)
           })
           const updatedRide = await Rides.updateOne(
             {
@@ -66,8 +66,10 @@ module.exports = {
       } else if (req.body.hasOwnProperty('removeRider')) {
         const removeRider = req.body.removeRider
         if (findRide.rider_usernames.includes(removeRider)) {
-          const index = findRide.rider_usernames.findIndex((rider) => rider === removeRider)
-          findRide.rider_usernames.splice(index,1)
+          const index = findRide.rider_usernames.findIndex(
+            (rider) => rider === removeRider
+          )
+          findRide.rider_usernames.splice(index, 1)
           const updatedRide = await Rides.updateOne(
             {
               id: req.params.ride_id,
@@ -80,6 +82,14 @@ module.exports = {
         } else {
           return res.badRequest('user not accepted on ride')
         }
+      } else {
+        const updatedRide = await Rides.updateOne(
+          {
+            id: req.params.ride_id,
+          },
+          req.body
+        )
+        return res.ok(updatedRide)
       }
     } catch (error) {
       return res.status(404).send(error)
