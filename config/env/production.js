@@ -19,6 +19,11 @@
  * https://sailsjs.com/docs/concepts/deployment
  */
 
+const ENV = process.env.NODE_ENV;
+require('dotenv').config({
+  path: `${__dirname}/../../.env.${ENV}`,
+});
+
 module.exports = {
 
 
@@ -58,7 +63,7 @@ module.exports = {
       //  sails_datastores__default__url=mysql://admin:myc00lpAssw2D@db.example.com:3306/my_prod_db
       //  ```
       //--------------------------------------------------------------------------
-
+      url: process.env.prod_db_url
       /****************************************************************************
       *                                                                           *
       * More adapter-specific options                                             *
@@ -237,7 +242,7 @@ module.exports = {
     ***************************************************************************/
     cookie: {
       // secure: true,
-      maxAge: 24 * 60 * 60 * 1000,  // 24 hours
+      maxAge: 1 * 60 * 60 * 1000,  // 24 hours
     },
 
   },
@@ -265,10 +270,11 @@ module.exports = {
     * > Be sure to use the right protocol!  ("http://" vs. "https://")         *
     *                                                                          *
     ***************************************************************************/
-    // onlyAllowOrigins: [
+    onlyAllowOrigins: [
     //   'https://example.com',
     //   'https://staging.example.com',
-    // ],
+    'http://localhost:1337'
+    ],
 
 
     /***************************************************************************

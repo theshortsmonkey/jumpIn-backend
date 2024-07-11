@@ -52,7 +52,6 @@ module.exports.datastores = {
     // url: 'mysql://user:password@host:port/database',
     adapter: 'sails-mongo',
     url: 'mongodb://localhost:27017/testJumpInDb',
-
   },
 
 
