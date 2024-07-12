@@ -22,5 +22,6 @@ module.exports.policies = {
   'users/login': true,
   'users/logout': true,
   'users/getCurrentUser': true,
-  'users/create': true
+  'users/create': true,
+  'home/endpoints': true
 };

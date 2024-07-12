@@ -273,7 +273,8 @@ module.exports = {
     onlyAllowOrigins: [
     //   'https://example.com',
     //   'https://staging.example.com',
-    'http://localhost:1337'
+    'http://localhost:1337',
+    'https://jumpin-backend.onrender.com/'
     ],
 
 
