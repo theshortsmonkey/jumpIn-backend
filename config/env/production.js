@@ -241,7 +241,7 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cookie: {
-      // secure: true,
+      secure: true,
       maxAge: 1 * 60 * 60 * 1000,  // 24 hours
     },
 
@@ -274,7 +274,7 @@ module.exports = {
     //   'https://example.com',
     //   'https://staging.example.com',
     'http://localhost:1337',
-    'https://jumpin-backend.onrender.com/'
+    'https://jumpin-backend.onrender.com'
     ],
 
 
