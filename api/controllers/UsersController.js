@@ -62,12 +62,12 @@ module.exports = {
   },
   getCurrentUser: async (req, res) => {
     try {
+      console.log(req.session)
       if (req.session.userId) {
         const findUser = await Users.findOne({ id: req.session.userId })
         const result = {
           username: findUser.username,
           isDriver: findUser.driver_verification_status,
-          sid: req.session,
         }
         return res.json(result)
       } else {
