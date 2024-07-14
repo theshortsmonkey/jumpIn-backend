@@ -166,6 +166,7 @@ module.exports = {
           .then((compareResult) => {
             if (compareResult) {
               req.session.userId = findUser.id
+              console.log(req.sessions)
               const result = {
                 username: findUser.username,
                 isDriver: findUser.driver_verification_status,
