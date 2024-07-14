@@ -217,7 +217,7 @@ module.exports = {
     * https://sailsjs.com/config/session#?the-session-id-cookie                *
     *                                                                          *
     ***************************************************************************/
-    // name: '__Host-sails.sid',
+    name: '__Host-sails.sid',
 
     /***************************************************************************
     *                                                                          *
