@@ -171,7 +171,7 @@ module.exports = {
               const result = {
                 username: findUser.username,
                 isDriver: findUser.driver_verification_status,
-                sid: req.session.userId,
+                session: req.session,
               }
               return res.json(result)
             } else {
