@@ -67,6 +67,7 @@ module.exports = {
         const result = {
           username: findUser.username,
           isDriver: findUser.driver_verification_status,
+          sid: req.session,
         }
         return res.json(result)
       } else {
@@ -166,10 +167,11 @@ module.exports = {
           .then((compareResult) => {
             if (compareResult) {
               req.session.userId = findUser.id
-              console.log(req.sessions)
+              console.log(req.session)
               const result = {
                 username: findUser.username,
                 isDriver: findUser.driver_verification_status,
+                sid: req.session.userId,
               }
               return res.json(result)
             } else {
