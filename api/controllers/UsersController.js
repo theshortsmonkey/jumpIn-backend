@@ -62,7 +62,6 @@ module.exports = {
   },
   getCurrentUser: async (req, res) => {
     try {
-      console.log(req.session)
       if (req.session.userId) {
         const findUser = await Users.findOne({ id: req.session.userId })
         const result = {
