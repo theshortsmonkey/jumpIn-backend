@@ -135,7 +135,11 @@ module.exports = {
      *                                                                          *
      ***************************************************************************/
     cors: {
-      allowOrigins: ['http://localhost:43089'],
+      allowOrigins: [
+        'http://localhost:43089',
+        'https://66bbac849837ad00082cbf5f--jumpin-theshortsmonkey.netlify.app/',
+        'https://jumpin-theshortsmonkey.netlify.app/',
+      ],
       allowCredentials: true,
     },
   },
