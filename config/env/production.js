@@ -137,8 +137,8 @@ module.exports = {
     cors: {
       allowOrigins: [
         'http://localhost:43089',
-        'https://66bbac849837ad00082cbf5f--jumpin-theshortsmonkey.netlify.app/',
-        'https://jumpin-theshortsmonkey.netlify.app/',
+        'https://66bbac849837ad00082cbf5f--jumpin-theshortsmonkey.netlify.app',
+        'https://jumpin-theshortsmonkey.netlify.app',
       ],
       allowCredentials: true,
     },
@@ -171,7 +171,6 @@ module.exports = {
      *                                                                          *
      ***************************************************************************/
     adapter: '@sailshq/connect-redis',
-    // url: 'redis://localhost:6379/',
     url: process.env.session_redis_url,
     //--------------------------------------------------------------------------
     // /\   OR, to avoid checking it in to version control, you might opt to
@@ -248,10 +247,10 @@ module.exports = {
      * > Be sure to use the right protocol!  ("http://" vs. "https://")         *
      *                                                                          *
      ***************************************************************************/
-    onlyAllowOrigins: [
-      'http://localhost:*',
-      'https://jumpin-backend.onrender.com',
-    ],
+    // onlyAllowOrigins: [
+    //   'http://localhost:*',
+    //   'https://jumpin-backend.onrender.com',
+    // ],
 
     /***************************************************************************
      *                                                                          *
@@ -348,8 +347,6 @@ module.exports = {
    *                                                                         *
    **************************************************************************/
   // ssl: {
-  //   key: require('fs').readFileSync((require('path').resolve(__dirname,'../ssl/key.pem'))),
-  //   cert: require('fs').readFileSync((require('path').resolve(__dirname,'../ssl/cert.pem'))),
   // },
 
   /**************************************************************************
