@@ -23,5 +23,6 @@ module.exports.policies = {
   'users/logout': true,
   'users/getCurrentUser': true,
   'users/create': true,
+  'users/imageDownload': true,
   'home/endpoints': true
 };

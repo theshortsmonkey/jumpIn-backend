@@ -9,10 +9,6 @@
  * https://sailsjs.com/config/session
  */
 
-const ENV = process.env.NODE_ENV;
-require('dotenv').config({
-  path: `${__dirname}/../../.env.${ENV}`,
-});
 module.exports.session = {
 
   /***************************************************************************
@@ -40,6 +36,7 @@ module.exports.session = {
   //   return !!req.path.match(req._sails.LOOKS_LIKE_ASSET_RX);
   // },
   cookie: {
-    maxAge: 15*60*1000
+    maxAge: 15*60*1000,
+    sameSite: 'none'
   }
 };

@@ -62,7 +62,6 @@ module.exports = {
   },
   getCurrentUser: async (req, res) => {
     try {
-      console.log(req.session)
       if (req.session.userId) {
         const findUser = await Users.findOne({ id: req.session.userId })
         const result = {
@@ -73,7 +72,7 @@ module.exports = {
       } else {
         res.status(404)
         return res.json({
-          message: 'UserId not found',
+          message: 'No active session available',
         })
       }
     } catch (error) {
@@ -167,11 +166,9 @@ module.exports = {
           .then((compareResult) => {
             if (compareResult) {
               req.session.userId = findUser.id
-              console.log(req.session)
               const result = {
                 username: findUser.username,
                 isDriver: findUser.driver_verification_status,
-                session: req.session,
               }
               return res.json(result)
             } else {
