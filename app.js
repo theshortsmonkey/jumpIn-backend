@@ -27,7 +27,6 @@
 process.chdir(__dirname);
 
 
-
 // Attempt to import `sails` dependency, as well as `rc` (for loading `.sailsrc` files).
 var sails;
 var rc;
@@ -50,5 +49,10 @@ try {
 }//-•
 
 
+
+const ENV = process.env.NODE_ENV
+require('dotenv').config({
+  path: `.env.${ENV}`,
+})
 // Start server
 sails.lift(rc('sails'));
