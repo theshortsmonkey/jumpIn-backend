@@ -72,7 +72,7 @@ module.exports = {
       } else {
         res.status(404)
         return res.json({
-          message: 'UserId not found',
+          message: 'No active session available',
         })
       }
     } catch (error) {
@@ -170,7 +170,6 @@ module.exports = {
               const result = {
                 username: findUser.username,
                 isDriver: findUser.driver_verification_status,
-                session: req.session,
               }
               return res.json(result)
             } else {
